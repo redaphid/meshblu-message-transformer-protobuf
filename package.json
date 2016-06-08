@@ -1,0 +1,33 @@
+{
+  "name": "meshblu-message-transformer-protobuf",
+  "version": "1.0.0",
+  "description": "Convert between JSON and protocol buffer-formatted Meshblu messages",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "protobufjs": "^5.0.1"
+  },
+  "devDependencies": {
+    "server-destroy": "^1.0.1",
+    "shmock": "^0.8.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redaphid/meshblu-message-transformer-protobuf.git"
+  },
+  "keywords": [
+    "IoT",
+    "meshblu"
+  ],
+  "author": "redaphid",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/redaphid/meshblu-message-transformer-protobuf/issues"
+  },
+  "homepage": "https://github.com/redaphid/meshblu-message-transformer-protobuf#readme"
+}

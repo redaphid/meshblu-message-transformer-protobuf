@@ -1,0 +1,9 @@
+{
+  "name": "spaceship",
+  "type": "object",
+  "properties": {
+    "name": {"type": "string"},
+    "size": {"type": "integer"},
+    "fast": {"type": "boolean"}
+  }
+}

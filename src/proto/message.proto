@@ -1,0 +1,9 @@
+message MeshbluMetadata {
+  optional string messageType = 1;
+  repeated string devices     = 2;
+}
+
+message MeshbluMessage {
+  optional MeshbluMetadata metadata = 1;
+  optional bytes data = 2;
+}

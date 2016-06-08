@@ -1,0 +1,5 @@
+message spaceship {
+  optional string name=1;
+  optional int32  size=2;
+  optional bool fast=3;
+}

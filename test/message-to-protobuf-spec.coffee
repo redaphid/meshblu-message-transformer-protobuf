@@ -1,17 +1,16 @@
 shmock                = require 'shmock'
 enableDestroy         = require 'server-destroy'
 TestHelper            = require './helpers'
-MessageToProtobuf     = require '..'
+MessageTransformer    = require '..'
 spaceshipSchema       = require './data/spaceship-schema.json'
 
 describe 'MessageToProtobuf', ->
   beforeEach 'setup meshblu', (done) ->
     @meshblu = shmock done
     enableDestroy @meshblu
-    @devicesRequest = @meshblu.get '/v2/tentacle-uuid'
 
     @meshbluConfig =
-      host: 'localhost'
+      server: 'localhost'
       port: @meshblu.address().port
       protocol: 'http'
       uuid: 'tentacle-uuid'
@@ -21,10 +20,7 @@ describe 'MessageToProtobuf', ->
     @meshblu.destroy done
 
   beforeEach ->
-    @sut = new MessageToProtobuf {@meshbluConfig}
-
-  it 'should exist', ->
-    expect(@sut).to.exist
+    @sut = new MessageTransformer
 
   context 'when given a tentacle message', ->
     beforeEach 'meshblu', ->
@@ -34,12 +30,12 @@ describe 'MessageToProtobuf', ->
           message:
             spaceship: spaceshipSchema
 
-      @devicesRequest.reply device
+      @meshblu.get('/v2/devices/tentacle-uuid').reply 200, device
 
     beforeEach 'setup message', ->
-      spaceshipMessage = name: "speedy", size: 5, fast: false
+      spaceshipMessage = name: "speedy", size: 5
 
-      @protoMsg = TestHelper.messageToProtobuf
+      @message = TestHelper.messageToProtobuf
         devices: ['t100']
         type: 'spaceship'
         data: TestHelper.encode
@@ -49,13 +45,12 @@ describe 'MessageToProtobuf', ->
 
 
     beforeEach (done) ->
-      @sut.toJSON @protoMsg, (error, @response) => done()
+      @sut.toJSON {@message, @meshbluConfig}, (error, @response) => done()
 
     it 'should create a json object', ->
-      expect(@response).to.deep.equal(
+      message =
+        data: name: "speedy", size: 5
         devices: ['t100']
-        metadata:
-          messageType: 'tentacle'
-        data:
-          name: "speedy", size: 5, fast: false
-      )
+        metadata: messageType: 'spaceship'
+              
+      expect(@response).to.deep.equal(message)
